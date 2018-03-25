@@ -8,10 +8,7 @@ https://github.com/jaimeliew1/Project_Euler_Solutions
 
 
 def run():
-    N = 1000
-
-    ans = sum(i for i in range(N) if (i%3==0) or (i%5==0))
-    return ans
+    return 0
 
 
 if __name__ == "__main__":

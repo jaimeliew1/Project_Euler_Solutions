@@ -9,15 +9,26 @@ def numDigits(n):
 def primes_sieve(n):
     # Returns boolean array indicating if each number is prime or not.
     # Sieve of Eratosthenes.
-    a = [True] * int(n)
+    a = [True] * (n+1)
     a[0] = a[1] = False
 
     for (i, isprime) in enumerate(a):
         if isprime:
 
-            for n in range(i*i, int(n), i):     # Mark factors non-prime
+            for n in range(i*i, len(a), i):     # Mark factors non-prime
                 a[n] = False
     return a
+
+#def list_primality(n):
+#	# Sieve of Eratosthenes
+#	result = [True] * (n + 1)
+#	result[0] = result[1] = False
+#	for i in range(sqrt(n) + 1):
+#		if result[i]:
+#			for j in range(i * i, len(result), i):
+#				result[j] = False
+#	return result
+
 
 def primelist(n):
     # Returns list of prime numbers below n.

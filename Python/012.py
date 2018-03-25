@@ -11,6 +11,8 @@ def  triNumber(n):
     return n*(n+1)//2
 
 def factors(n):
+    # Returns factors of n in a list.
+    # !!! Could be further optimised by using a list of primes.
     factors = []
     for i in range(1, int(n**0.5)):
         if n%i == 0:
@@ -27,8 +29,6 @@ def run():
         nDivisors = len(factors(triNumber(i)))
         i += 1
     return triNumber(i)
-
-
 
 if __name__ == "__main__":
     print(run())

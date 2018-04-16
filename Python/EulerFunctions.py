@@ -1,11 +1,11 @@
 import math
 
-
+# numDigits used in problems: ..., 25,
 def numDigits(n):
     return math.floor(math.log10(n))+1
 
 
-
+# primes_sieve used in problems: ..., 27,
 def primes_sieve(n):
     # Returns boolean array indicating if each number is prime or not.
     # Sieve of Eratosthenes.

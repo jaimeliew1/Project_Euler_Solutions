@@ -18,10 +18,6 @@ def CollatzSequence(n):
     return seq
 
 def run():
-
-    return -1
-
-if __name__ == "__main__":
     maxLength = 1
     startNum = None
 
@@ -30,5 +26,8 @@ if __name__ == "__main__":
         if length > maxLength:
             maxLength, startNum = length, i
 
-    print(startNum)
+    return startNum
+
+if __name__ == "__main__":
+
     print(run())

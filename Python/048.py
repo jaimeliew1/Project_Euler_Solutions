@@ -9,8 +9,7 @@ https://github.com/jaimeliew1/Project_Euler_Solutions
 
 def run():
 
-
-    return -1
+    return sum(x**x for x in range(1,1000))%10000000000
 
 
 if __name__ == "__main__":

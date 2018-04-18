@@ -1,8 +1,8 @@
 import math
 
-# numDigits used in problems: ..., 25,
+# numDigits used in problems: ..., 25, 32
 def numDigits(n):
-    return math.floor(math.log10(n))+1
+    return math.floor(math.log10(n)) + 1
 
 
 # primes_sieve used in problems: ..., 27,

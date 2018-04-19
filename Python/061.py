@@ -5,6 +5,8 @@ Solution to Project Euler problem X
 Author: Jaime Liew
 https://github.com/jaimeliew1/Project_Euler_Solutions
 """
+import math
+
 def isTri(n):
     return ((math.sqrt(1+8*n)-1)/2).is_integer()
 

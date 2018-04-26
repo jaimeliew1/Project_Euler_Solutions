@@ -45,7 +45,7 @@ class Jnum:
     def __ne__(self,other):
         return self.n != other.n
 
-def checkThisSet(thisSet,depth,maxDepth):
+def checkThisSet(thisSet,depth,maxDepth, numSet):
     for q in (q for q in numSet if q  not in thisSet):
         workingBit = 0
         qIsCandidate = True
@@ -68,7 +68,7 @@ def checkThisSet(thisSet,depth,maxDepth):
                     return list(thisSet + [q])
                 else:
                     return [Jnum(0)]
-            furtherTesting = checkThisSet(list(thisSet + [q]),depth +1, maxDepth)
+            furtherTesting = checkThisSet(list(thisSet + [q]),depth +1, maxDepth, numSet)
             if furtherTesting != [Jnum(0)]:
                 return furtherTesting
 
@@ -96,7 +96,7 @@ def run():
 
     ### Recursive search loop
     for i in numSet:
-        currentSet = checkThisSet(list([i]), 1, 6)
+        currentSet = checkThisSet(list([i]), 1, 6, numSet)
         if currentSet != [Jnum(0)]:
             break
 

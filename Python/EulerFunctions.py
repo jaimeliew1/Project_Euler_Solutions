@@ -19,6 +19,17 @@ def primes_sieve(n):
                 a[n] = False
     return a
 
+def primes_gen(n):
+    # Generates prime numbers p < n
+    a = [True] * (n+1)
+    a[0] = a[1] = False
+
+    for (i, isprime) in enumerate(a):
+        if isprime:
+            yield i
+            for n in range(i*i, len(a), i):     # Mark factors non-prime
+                a[n] = False
+
 #def list_primality(n):
 #	# Sieve of Eratosthenes
 #	result = [True] * (n + 1)
@@ -28,6 +39,21 @@ def primes_sieve(n):
 #			for j in range(i * i, len(result), i):
 #				result[j] = False
 #	return result
+
+
+def primeFactors(x):
+    primefactors = Counter()
+    while x > 1:
+        for p in primes:
+            if x%p == 0:
+                x = x//p
+                primefactors[p] += 1
+                break
+    return list(primefactors.elements())
+
+def factors(x):
+    factors = list([i, x//i] for i in range(1, int(pow(x, 0.5) + 1)) if x % i == 0)
+    return set(functools.reduce(list.__add__, factors))
 
 
 def primelist(n):

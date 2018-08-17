@@ -6,55 +6,78 @@ Author: Jaime Liew
 https://github.com/jaimeliew1/Project_Euler_Solutions
 """
 '''
-let X = X1 + X2 + ... + X50 be the sum of the number of successful
-basketball shots. Xi = 1 when successful and 0 when not.
-P(Xi=1) = 1-i/q, where q is a constant to be found.
+Barbara is a mathematician and a basketball player. She has found that the probability of scoring a point when shooting from a distance x is exactly (1 - x/q), where q is a real constant greater than 50.
 
-Find q such that P(X=20) = 0.02
-Let P(n, x) be the probability of scoring n within distances 1, 2, ..., x
-P(n=20, x<=50) = P(n=19, x<=19)*P(n=1, x>19) + P(n=19, x<=20)P(n=1, x>20) +
-so you can calculate p(n) if you know all p(i) for i<n
+During each practice run, she takes shots from distances x = 1, x = 2, ..., x = 50 and, according to her records, she has precisely a 2 % chance to score a total of exactly 20 points.
 
-P(n=1,x=i) = (1-i/q)*n!/(i*q^(n-1))
-P(n=1, x<=a) = sum(i=1->a)  (1-i/q)*a!/(i*q^(a-1))
-
-P(n=2, x<= 50) = P(n=1,x<=1)P(n=1, x>1) + .... P(n=1,x<=2)P(n=1, x>2)
-            =  P(n=1,x<=1)(1 - P(n=1,x<=1)) + ... this line is wrong. not a cdf.
-
-P(s=1, a <= x <= b) = sum(i=a to b) b!/((a-1)!*i*q^(b-a))
+Find q and give your answer rounded to 10 decimal places.
 
 
 '''
-import numpy as np
-import matplotlib.pyplot as plt
-from math import factorial
-def run():
-    return -1
 
-def Prange(q, a, b):
-    # Returns the probability of scoring 1 point (no more or less) when
-    # taking one shot from distance a to b inclusive.
-    P = 0
-    for i in range(a, b+1):
-        print((1 - i/q)*factorial(b)/factorial(a-1) * 1/(i*q**(b-a)))
-        P += (1 - i/q)*factorial(b)/factorial(a-1) * 1/(i*q**(b-a))
-    return(P)
+
+def probability(q):
+
+    cache = {(0, 1): 1/q,
+             (1, 1): 1 - 1/q} # (made, distance): probability
+
+    # recursive function
+    def recurse(made, distance):
+        if made < 0 or made > distance:
+            return 0
+
+        if (made, distance) not in cache:
+
+            p_hit = 1 - distance/q
+            p_miss = distance/q
+            cache[(made, distance)] = p_hit*recurse(made-1, distance-1) + \
+                                      p_miss*recurse(made, distance-1)
+
+        return cache[(made, distance)]
+
+
+    return recurse(20, 50)
+
+
+
+def golden(f, x1, x4, tol=1e-11):
+# Performs golden section search to minimise function f in the bounds [x1, x4]
+# x1 < x2 < x3 < x4
+    Gold = (1 + 5**0.5)/2 # golden_ratio
+
+    eps = 1e10
+    x2 = x4 - (x4-x1)/Gold
+    x3 = x1 + (x4-x1)/Gold
+
+
+    while eps > tol:
+        bold = x2
+
+        if f(x2) < f(x3): # if minimum is in left section
+            x4 = x3
+        else: # if the minimum is in the right section
+            x1 = x2
+
+        x2 = x4 - (x4-x1)/Gold
+        x3 = x1 + (x4-x1)/Gold
+
+
+
+        eps = abs(bold - x2)
+
+
+    return(x2)
+
+
+def run():
+    def toOptimize(q):
+        return abs(probability(q) - 0.02)
+
+    ans = golden(toOptimize, 50, 60)
+    return f'{ans:.10f}'
+
+
 
 if __name__ == "__main__":
-    N = 50
-    q = 100
-
-    # probability of scoring from positions 1 to x inclusive
-    P1 = np.zeros(51)
-    # probability of scoring from positions x (exclusive to 50 (inclusive))
-    P1_ = np.zeros(51)
-    for i in range(1, 51):
-        P1[i] = Prange(q, 1, i)
-        P1_[i] = Prange(q, i+1, 50)
-
-    P2 = np.zeros(51)
-    for i in range(1, 51):
-        P2[i] = P1[i]*P1_[i] # this wont work
-
     print(run())
 

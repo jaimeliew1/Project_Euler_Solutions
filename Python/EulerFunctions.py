@@ -1,5 +1,6 @@
 import math
-
+import functools
+from collections import Counter
 # numDigits used in problems: ..., 25, 32
 def numDigits(n):
     return math.floor(math.log10(n)) + 1

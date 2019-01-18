@@ -1,6 +1,21 @@
 import math
 import functools
 from collections import Counter
+import time
+
+
+
+def timeit(method):
+    def timed(*args, **kw):
+        ts = time.time()
+        result = method(*args, **kw)
+        te = time.time()
+
+        print('Time elapsed for {}: {:2.4f}s'.format(method.__name__, (te - ts)))
+        return result
+    return timed
+
+
 # numDigits used in problems: ..., 25, 32
 def numDigits(n):
     return math.floor(math.log10(n)) + 1
@@ -42,7 +57,7 @@ def primes_gen(n):
 #	return result
 
 
-def primeFactors(x):
+def primeFactors(x, primes):
     primefactors = Counter()
     while x > 1:
         for p in primes:
@@ -61,7 +76,16 @@ def primelist(n):
     # Returns list of prime numbers below n.
     return [i for i, p in enumerate(primes_sieve(n)) if p]
 
-
+def multiplicative_partitions(n, min_divisor=2):
+    #https://stackoverflow.com/questions/24723721/how-can-i-generate-all-possible-divisor-products-for-a-number
+    """Generate expressions of n as a product of ints >= min_divisor."""
+    if n == 1:
+        yield []
+    for divisor in range(min_divisor, n+1):
+        if n % divisor == 0:
+            for product in multiplicative_partitions(n // divisor, divisor):
+                yield product + [divisor]
+                
 
 def _try_composite(a, d, n, s):
     if pow(a, d, n) == 1:

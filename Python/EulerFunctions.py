@@ -57,7 +57,7 @@ def primes_gen(n):
 #	return result
 
 
-def primeFactors(x, primes):
+def primeFactors(x, primes, aslist=False):
     primefactors = Counter()
     while x > 1:
         for p in primes:
@@ -65,7 +65,10 @@ def primeFactors(x, primes):
                 x = x//p
                 primefactors[p] += 1
                 break
-    return list(primefactors.elements())
+    if aslist:
+        return list(primefactors.elements())
+    else:
+        return dict(primefactors)
 
 def factors(x):
     factors = list([i, x//i] for i in range(1, int(pow(x, 0.5) + 1)) if x % i == 0)
@@ -85,7 +88,7 @@ def multiplicative_partitions(n, min_divisor=2):
         if n % divisor == 0:
             for product in multiplicative_partitions(n // divisor, divisor):
                 yield product + [divisor]
-                
+
 
 def _try_composite(a, d, n, s):
     if pow(a, d, n) == 1:

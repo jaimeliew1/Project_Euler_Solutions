@@ -5,28 +5,17 @@ Solution to Project Euler problem 104
 Author: Jaime Liew
 https://github.com/jaimeliew1/Project_Euler_Solutions
 """
-from EulerFunctions import timeit
 from math import log10, sqrt
 
-golden = (sqrt(5) + 1)/2
-
+golden  = (sqrt(5) + 1)/2
+log_phi = log10(golden)
+log_5   = log10(sqrt(5))
 
 def Fibonacci(N):
-    # returns the Nth fibonacci number, but only the first 10ish digits
-    fib = 1
-    for n in range(N):
-        fib *= golden
-        L = int(log10(fib))
-        if L > 12:
-            fib/=10**(L-12)
-    return fib/sqrt(5)
+    # returns the the first 9 digits of the Nth fibonacci number. Only works for
+    # fibonacci numbers with 9 or more digits in the first place.
+    return 10**(N*log_phi - log_5 - int(N*log_phi - log_5 - 8))
 
-def Fibonacci_mod():
-    # generates fibonacci numbers mod 10**9
-    a, b = 0, 1
-    while True:
-        yield b
-        a, b = b, (a + b)%10**9
 
 def pandigital_last(n):
     digits = sorted([(n//10**i)%10 for i in range(9)])
@@ -34,17 +23,17 @@ def pandigital_last(n):
 
 
 def pandigital_first(n):
-    L = int(log10(n))
-    digits = sorted([n//10**(L-i)%10 for i in range(9)])
+    digits = sorted([n//10**(8-i)%10 for i in range(9)])
     return True if digits == [1,2,3,4,5,6,7,8,9] else False
 
 
-@timeit
 def run():
-    for i, fibmod in enumerate(Fibonacci_mod()):
-        if pandigital_last(fibmod):
-            if pandigital_first(Fibonacci(i+1)):
-                return i+1
+    i, a, b = 1, 0, 1
+    while True:
+        if pandigital_last(b):
+            if pandigital_first(Fibonacci(i)):
+                return i
+        i, a, b = i+1, b, (a + b)%10**9 # generate fibonacci numbers mod 10**9
 
 
 if __name__ == "__main__":

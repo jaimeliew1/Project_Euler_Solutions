@@ -1,24 +1,25 @@
-# -*- coding: utf-8 -*-
 """
 Created on Sun Mar 25 18:26:35 2018
 
 @author: J
 """
 
-import importlib, time, os
+import importlib
+import time
+from pathlib import Path
 
 
+this_dir = Path(__file__).parent
 
-problems = [i[:3] for i in os.listdir() if len(i) == 6]
-totaltime = 0.0  # In seconds
-for prob in problems:
+for prob in this_dir.glob("*.py"):
+    try:
+        prob_mod = prob.stem
+        int(prob_mod)
+    except:
+        continue
 
-    module = importlib.import_module(prob)
+    module = importlib.import_module(prob_mod)
     starttime = time.time()
-    ans = module.run()  # Must return a string
+    ans = module.run()
     elapsedtime = time.time() - starttime
-    print('Problem {} answer: {} ({:2.8f} s)'.format(prob, ans, elapsedtime))
-    totaltime += elapsedtime
-
-#		"" if actualans == expectans else "    *** FAIL ***"))
-print("Total computation time: {} ms".format(int(round(totaltime * 1000))))
+    print(f"{prob} answer: {ans} ({elapsedtime:2.8f}s)")
